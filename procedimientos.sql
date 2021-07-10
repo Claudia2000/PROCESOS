@@ -116,3 +116,27 @@ begin
 update tipo_prenda set nomtipop=tipo, desctipop=descrip where idtipop=idee;
 commit;
 end;
+
+-----------------------------------------------------------------LOGIN
+create or replace procedure loginn(
+usuario cliente.userc%type,
+contras cliente.contra%type,
+rpt out number)
+is
+usuarioo cliente.userc%type;
+contraa cliente.contra%type;
+begin
+select userc, contra into usuarioo, contraa from cliente where  userc=usuario and contra=contras;
+rpt :=1;
+exception
+when no_data_found then rpt :=0;
+end;
+
+-----------------------------------------------------------------REPORTE1
+create or replace procedure reporte1(tipo in varchar2, c_cursor out sys_refcursor)
+is 
+begin
+open c_cursor for
+select p.idprenda,p.nomprenda,p.precioprenda,p.colorprenda,p.tallaprenda,p.idtipop,t.nomtipop from prenda p,tipo_prenda t
+where p.idtipop=t.idtipop and t.nomtipop=tipo;
+end;
